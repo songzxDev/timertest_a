@@ -31,7 +31,7 @@ public class MyTest {
 	 * @return void 返回值类型
 	 */
 	public static void main(String[] args) {
-		testC();
+		tesdD();
 	}
 
 	public static void testA() {
@@ -75,7 +75,28 @@ public class MyTest {
 	}
 
 	public static void tesdD() {
+		System.out.println("当前时间为：" + new Date());
+		Calendar calendarRefA = Calendar.getInstance();
+		calendarRefA.add(Calendar.SECOND, 10);
+		Date runDateA = calendarRefA.getTime();
+		System.out.println("计划时间为：" + runDateA);
 
+		Calendar calendarRefB = Calendar.getInstance();
+		calendarRefB.add(Calendar.SECOND, 20);
+		Date runDateB = calendarRefB.getTime();
+		System.out.println("计划时间为：" + runDateB);
+
+		MyTask taskA = new MyTask();
+		MyTask taskB = new MyTask();
+		/*
+		 * Timer中允许有多个TimerTask任务及延时的测试
+		 * 
+		 * TimerTask是以队列的方式一个一个被顺序性地执行，所以执行的时间有可能和预期的时间不一致， 因为前面的任务有可能
+		 * 耗时较长，则后面的任务运行的时间也滞后
+		 */
+		Timer timer = new Timer();
+		timer.schedule(taskA, runDateA);
+		timer.schedule(taskB, runDateB);
 	}
 
 }
