@@ -12,6 +12,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 
+import cn.songzx.timertest_a.mytask.MyCancleTaskA;
+import cn.songzx.timertest_a.mytask.MyCancleTaskB;
+import cn.songzx.timertest_a.mytask.MyCancleTaskC;
 import cn.songzx.timertest_a.mytask.MyLaterTaskA;
 import cn.songzx.timertest_a.mytask.MyLaterTaskB;
 import cn.songzx.timertest_a.mytask.MyTask;
@@ -157,6 +160,44 @@ public class MyTest {
 		timer.schedule(laterTaskA, runDate, 3000);
 	}
 
+	public static void testI() {
+		System.out.println("当前时间为：" + new Date());
+		Calendar calendarRefA = Calendar.getInstance();
+		Date runDateA = calendarRefA.getTime();
+		System.out.println("计划时间为：" + runDateA);
+		MyCancleTaskA cancleTaskA = new MyCancleTaskA();
+		MyCancleTaskB cancleTaskB = new MyCancleTaskB();
+		MyCancleTaskC cancleTaskC = new MyCancleTaskC();
+		Timer timer = new Timer();
+		timer.schedule(cancleTaskA, runDateA, 4000L);
+		timer.schedule(cancleTaskB, runDateA, 4000L);
+		timer.schedule(cancleTaskC, runDateA, 4000L);
+	}
+
+	public static void testJ() {
+		try {
+			System.out.println("当前时间为：" + new Date());
+			Calendar calendarRefA = Calendar.getInstance();
+			Date runDateA = calendarRefA.getTime();
+			System.out.println("计划时间为：" + runDateA);
+			MyCancleTaskB cancleTaskB = new MyCancleTaskB();
+			MyCancleTaskC cancleTaskC = new MyCancleTaskC();
+			Timer timer = new Timer();
+			timer.schedule(cancleTaskB, runDateA, 1000L);
+			timer.schedule(cancleTaskC, runDateA, 1000L);
+			Thread.sleep(10000L);
+			/*
+			 * 和TimerTask类中的cancle()方法清除自身不同，Timer类中的cancle()方法作用是将任务队列中全部任务进行清空
+			 * ，并且进程被销毁
+			 */
+			System.out.println("★★★★★★★★★★★★★★★★★★★");
+			timer.cancel();
+			System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * @Date: 2017年9月17日下午5:40:26
 	 * @Title: main
@@ -165,6 +206,6 @@ public class MyTest {
 	 * @return void 返回值类型
 	 */
 	public static void main(String[] args) {
-		testH();
+		testJ();
 	}
 }
