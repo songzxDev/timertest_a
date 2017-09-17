@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 
+import cn.songzx.timertest_a.mytask.MyLaterTaskA;
+import cn.songzx.timertest_a.mytask.MyLaterTaskB;
 import cn.songzx.timertest_a.mytask.MyTask;
 
 /**
@@ -22,17 +24,6 @@ import cn.songzx.timertest_a.mytask.MyTask;
  * 
  */
 public class MyTest {
-
-	/**
-	 * @Date: 2017年9月17日下午5:40:26
-	 * @Title: main
-	 * @Description: TODO(这里用一句话描述这个方法的作用)
-	 * @param args
-	 * @return void 返回值类型
-	 */
-	public static void main(String[] args) {
-		tesdD();
-	}
 
 	public static void testA() {
 		System.out.println("当前时间为：" + new Date());
@@ -99,4 +90,81 @@ public class MyTest {
 		timer.schedule(taskB, runDateB);
 	}
 
+	public static void testE() {
+		System.out.println("当前时间为：" + new Date());
+		Calendar calendarRefA = Calendar.getInstance();
+		Date runDateA = calendarRefA.getTime();
+		System.out.println("A计划时间为：" + runDateA);
+
+		Calendar calendarRefB = Calendar.getInstance();
+		calendarRefB.add(Calendar.SECOND, 10);
+		Date runDateB = calendarRefB.getTime();
+		System.out.println("B计划时间为：" + runDateB);
+
+		/*
+		 * 在代码中设置任务1和任务2的运行时间间隔10秒，由于taskA需要用20秒执行完任务，所以taskA结束的时间就是taskB的开始时间，
+		 * 不再以10秒作参考，究其原理还是因为Task是放入队列，得一个一个执行
+		 */
+		MyLaterTaskA laterTaskA = new MyLaterTaskA();
+		MyLaterTaskB laterTaskB = new MyLaterTaskB();
+
+		Timer timer = new Timer();
+		timer.schedule(laterTaskA, runDateA);
+		timer.schedule(laterTaskB, runDateB);
+	}
+
+	public static void testF() {
+		System.out.println("当前时间为：" + new Date());
+		Calendar calendarRef = Calendar.getInstance();
+		calendarRef.add(Calendar.SECOND, 10);
+		Date runDate = calendarRef.getTime();
+		System.out.println("计划时间为：" + runDate);
+		MyTask task = new MyTask();
+		Timer timer = new Timer();
+		/*
+		 * schedule(TimerTask task,Date firstTime,long period)
+		 * 
+		 * 该方法的作用是指定的日期之后按指定的间隔周期，无限循环地执行某一任务。
+		 */
+		timer.schedule(task, runDate, 4000);
+	}
+
+	public static void testG() {
+		System.out.println("当前时间为：" + new Date());
+		Calendar calendarRef = Calendar.getInstance();
+		// 如果计划时间早于当前时间，则立即执行task任务
+		calendarRef.add(Calendar.SECOND, calendarRef.get(Calendar.SECOND) - 10);
+		Date runDate = calendarRef.getTime();
+		System.out.println("计划时间为：" + runDate);
+		MyTask task = new MyTask();
+		Timer timer = new Timer();
+		/*
+		 * schedule(TimerTask task,Date firstTime,long period)
+		 * 
+		 * 该方法的作用是指定的日期之后按指定的间隔周期，无限循环地执行某一任务。
+		 */
+		timer.schedule(task, runDate, 4000);
+	}
+
+	public static void testH() {
+		System.out.println("当前时间为：" + new Date());
+		Calendar calendarRef = Calendar.getInstance();
+		calendarRef.add(Calendar.SECOND, 10);
+		Date runDate = calendarRef.getTime();
+		System.out.println("计划时间为：" + runDate);
+		MyLaterTaskA laterTaskA = new MyLaterTaskA();
+		Timer timer = new Timer();
+		timer.schedule(laterTaskA, runDate, 3000);
+	}
+
+	/**
+	 * @Date: 2017年9月17日下午5:40:26
+	 * @Title: main
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @param args
+	 * @return void 返回值类型
+	 */
+	public static void main(String[] args) {
+		testH();
+	}
 }
