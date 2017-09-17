@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 
+import cn.songzx.timertest_a.mytask.MyCancleErrorTaskA;
 import cn.songzx.timertest_a.mytask.MyCancleTaskA;
 import cn.songzx.timertest_a.mytask.MyCancleTaskB;
 import cn.songzx.timertest_a.mytask.MyCancleTaskC;
@@ -198,6 +199,22 @@ public class MyTest {
 		}
 	}
 
+	public static void testK() {
+		int i = 0;
+		Calendar calendarRefA = Calendar.getInstance();
+		Date runDateA = calendarRefA.getTime();
+		while (true) {
+			i++;
+			Timer timer = new Timer();
+			MyCancleErrorTaskA taskA = new MyCancleErrorTaskA(i);
+			timer.schedule(taskA, runDateA);
+			/*
+			 * Timer类中的cancel()方法有时并没有争抢到queue锁，则让TimerTask类中的任务正常执行
+			 */
+			timer.cancel();
+		}
+	}
+
 	/**
 	 * @Date: 2017年9月17日下午5:40:26
 	 * @Title: main
@@ -206,6 +223,6 @@ public class MyTest {
 	 * @return void 返回值类型
 	 */
 	public static void main(String[] args) {
-		testJ();
+		testK();
 	}
 }
